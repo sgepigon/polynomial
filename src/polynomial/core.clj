@@ -25,6 +25,26 @@
   [polynomial]
   (eval (list 'fn '[x] polynomial)))
 
+(s/fdef satisfy
+  :args (s/or :arity-2 (s/cat :pred ifn?
+                              :x ::int-or-real)
+              :arity-3 (s/cat :pred ifn?
+                              :x ::int-or-real
+                              :n pos-int?))
+  :ret any?)
+
+(defn satisfy
+  "Generate `n` sample polynomials (default 10), evaluate each polynomial at `x`,
+  and check if it satisfies `pred`.
+
+  e.g. (satisfy zero? 1 10) will generate 10 polynomials and check if each
+  polynomial is zero when x = 1."
+  ([pred x] (satisfy pred x 10))
+  ([pred x n]
+   (for [[[polynomial] f] (s/exercise-fn `polynomial->fn n)]
+     {:polynomial polynomial
+      :satisfied? (pred (f x))})))
+
 (comment
 
   ;; get the seed of the last output
