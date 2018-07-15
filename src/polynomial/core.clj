@@ -7,22 +7,14 @@
 (s/def ::real (s/double-in :infinite? false :NaN? false))
 (s/def ::int-or-real (s/or :int int? :real ::real))
 
-(spec/def ::infix (spec/cat :x #{'x}
-                            :op #{'+ '-}
-                            :num ::int-or-real))
+(s/def ::expr (s/spec (s/cat :op #{'+}
+                             :x #{'x}
+                             :num ::int-or-real)))
 
-(spec/def ::prefix (spec/spec (spec/cat :op #{'+ '-}
-                                        :x #{'x}
-                                        :num ::int-or-real)))
+(s/def ::polynomial (s/cat :op #{'*}
+                           :coefficient ::int-or-real
+                           :expr (s/+ ::expr)))
 
-(spec/def ::expr (spec/or :basic ::prefix
-                          :complex (spec/spec (spec/cat :op #{'*}
-                                                        :basic ::prefix
-                                                        :complex ::expr))))
-
-(spec/def ::polynomial (spec/cat :op #{'*}
-                                 :coefficient ::int-or-real
-                                 :expr ::expr))
 (s/fdef polynomial->fn
   :args (s/cat :polynomial (s/spec ::polynomial))
   :ret (s/fspec :args (s/cat :x ::real)
