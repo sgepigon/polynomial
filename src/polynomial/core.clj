@@ -4,21 +4,20 @@
             [clojure.spec.test.alpha :as stest]
             [expound.alpha :as expound]))
 
-(s/def ::real (s/double-in :infinite? false :NaN? false))
-(s/def ::int-or-real (s/or :int int? :real ::real))
+(s/def ::number number?)
 
-(s/def ::expr (s/spec (s/cat :op #{'+}
+(s/def ::expr (s/spec (s/cat :op #{'+'}
                              :x #{'x}
-                             :num ::int-or-real)))
+                             :num ::number)))
 
-(s/def ::polynomial (s/cat :op #{'*}
-                           :coefficient ::int-or-real
+(s/def ::polynomial (s/cat :op #{'*'}
+                           :coefficient ::number
                            :expr (s/+ ::expr)))
 
 (s/fdef polynomial->fn
   :args (s/cat :polynomial (s/spec ::polynomial))
-  :ret (s/fspec :args (s/cat :x ::real)
-                :ret number?))
+  :ret (s/fspec :args (s/cat :x ::number)
+                :ret ::number))
 
 (defn polynomial->fn
   "convert a polynomial string to a Clojure function."
@@ -27,9 +26,9 @@
 
 (s/fdef satisfy
   :args (s/or :arity-2 (s/cat :pred ifn?
-                              :x ::int-or-real)
+                              :x ::number)
               :arity-3 (s/cat :pred ifn?
-                              :x ::int-or-real
+                              :x ::number
                               :n pos-int?))
   :ret any?)
 
