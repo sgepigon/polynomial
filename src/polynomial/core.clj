@@ -5,6 +5,10 @@
             [expound.alpha :as expound]))
 
 (s/def ::number number?)
+(s/def ::pred (s/with-gen ifn? #(sgen/elements [zero? int? integer? nat-int?
+                                                neg-int? neg? number? pos-int?
+                                                pos? ratio? rational? decimal?
+                                                double?])))
 
 (s/def ::expr (s/spec (s/cat :op #{'+'}
                              :x #{'x}
@@ -25,9 +29,9 @@
   (eval (list 'fn '[x] polynomial)))
 
 (s/fdef satisfy
-  :args (s/or :arity-2 (s/cat :pred ifn?
+  :args (s/or :arity-2 (s/cat :pred ::pred
                               :x ::number)
-              :arity-3 (s/cat :pred ifn?
+              :arity-3 (s/cat :pred ::pred
                               :x ::number
                               :n pos-int?))
   :ret any?)
