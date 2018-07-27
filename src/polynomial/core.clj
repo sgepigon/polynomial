@@ -13,12 +13,12 @@
                              :x #{'x}
                              :num ::number)))
 
-(s/def ::polynomial (s/cat :op #{'*'}
-                           :coefficient ::number
-                           :expr (s/+ ::expr)))
+(s/def ::polynomial (s/spec (s/cat :op #{'*'}
+                                   :coefficient ::number
+                                   :expr (s/+ ::expr))))
 
 (s/fdef polynomial->fn
-  :args (s/cat :polynomial (s/spec ::polynomial))
+  :args (s/cat :polynomial ::polynomial)
   :ret (s/fspec :args (s/cat :x ::number)
                 :ret ::number))
 
