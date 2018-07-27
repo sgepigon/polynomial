@@ -5,10 +5,9 @@
             [expound.alpha :as expound]))
 
 (s/def ::number number?)
-(s/def ::pred (s/with-gen ifn? #(sgen/elements [zero? int? integer? nat-int?
-                                                neg-int? neg? number? pos-int?
-                                                pos? ratio? rational? decimal?
-                                                double?])))
+(s/def ::pred (s/with-gen ifn? #(s/gen #{zero? int? integer? nat-int? neg-int?
+                                         neg? number? pos-int? pos? ratio?
+                                         rational? decimal? double?})))
 
 (s/def ::expr (s/spec (s/cat :op #{'+'}
                              :x #{'x}
