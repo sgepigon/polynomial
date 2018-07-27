@@ -29,12 +29,12 @@
   (eval (list 'fn '[x] polynomial)))
 
 (s/fdef satisfy
-  :args (s/or :arity-2 (s/cat :pred ::pred
-                              :x ::number)
-              :arity-3 (s/cat :pred ::pred
-                              :x ::number
-                              :n pos-int?))
   :ret any?)
+  :args (s/alt :arity-2 (s/cat :pred ::pred
+                               :x ::number)
+               :arity-3 (s/cat :pred ::pred
+                               :x ::number
+                               :n pos-int?))
 
 (defn satisfy
   "Generate `n` sample polynomials (default 10), evaluate each polynomial at `x`,
